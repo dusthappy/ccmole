@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCMole"
+  short_description: "Carry work context and settings between AI agents"
+  default_prompt: "Use $ccmole to help me continue this work with another agent and prepare any configuration I choose to reuse."
