@@ -4,7 +4,7 @@
 
 CCMole 是一个可安装的 Agent Skill，帮助你整理开发上下文、接续工作，并在不同 Agent 之间复用选定的 Rules、Skills、MCP 和非敏感配置。直接在你原本使用的 Agent 中操作。
 
-当前为 **0.1.0 预览版**：两条工作流已提供，验证范围见文末；不同宿主和配置格式的兼容性按实际证据判断。
+当前为 **0.1.1 预览版**：提供两条工作流，以及 Codex、Claude Code、ZCode、Kimi Code、Grok Build、OpenCode、Qoder、CodeBuddy、Gemini CLI 的客户端指南。安装入口已核对官方文档，真实客户端运行情况按实际证据报告。
 
 ## 从一句话开始
 
@@ -20,7 +20,9 @@ CCMole 是一个可安装的 Agent Skill，帮助你整理开发上下文、接�
 把这个项目的 Rules、指定的 Skill 和 MCP 配置迁到另一 Agent，先给我看差异。
 ```
 
-在 Codex 中可用 `$ccmole`，在 Claude Code 中可用 `/ccmole`。也可以直接表达上述需求，由宿主选择 Skill。
+例如，把 Kimi Code 中的工作交给 ZCode，或把 Grok Build 的项目交给 OpenCode。接力使用可读的交接包，配置迁移则先核对两端格式和作用域。
+
+Codex / ZCode 使用 `$ccmole`，Kimi Code 使用 `/skill:ccmole`，Claude Code / Grok Build 使用 `/ccmole`。OpenCode 可直接说「使用 ccmole 帮我交接当前工作」。具体入口见下表。
 
 ## 两条工作流
 
@@ -40,10 +42,19 @@ CCMole 是一个可安装的 Agent Skill，帮助你整理开发上下文、接�
 git clone https://github.com/dusthappy/ccmole.git
 ```
 
-| 宿主 | 仅当前项目 | 当前用户所有项目 |
-|---|---|---|
-| Codex | `.agents/skills/ccmole/` | `~/.agents/skills/ccmole/` |
-| Claude Code | `.claude/skills/ccmole/` | `~/.claude/skills/ccmole/` |
+| 客户端 | 仅当前项目 | 当前用户所有项目 | 调用 / 发现 |
+|---|---|---|---|
+| Codex | `.agents/skills/ccmole/` | `~/.agents/skills/ccmole/` | `$ccmole` |
+| Claude Code | `.claude/skills/ccmole/` | `~/.claude/skills/ccmole/` | `/ccmole` |
+| ZCode 内置 Agent | `.zcode/skills/ccmole/` | `~/.zcode/skills/ccmole/` | 设置 → Skills → 刷新并启用；`$ccmole` |
+| Kimi Code CLI / Desktop | `.kimi-code/skills/ccmole/` | `~/.kimi-code/skills/ccmole/`，或 `$KIMI_CODE_HOME/skills/ccmole/` | 新会话中 `/skill:ccmole` |
+| Grok Build CLI | `.grok/skills/ccmole/` | `~/.grok/skills/ccmole/` | `/ccmole` |
+| OpenCode | `.opencode/skills/ccmole/` | `~/.config/opencode/skills/ccmole/` | 自然语言要求使用 `ccmole` |
+| Qoder CLI | `.qoder/skills/ccmole/` | `~/.qoder/skills/ccmole/` | `/skills reload` 后 `/ccmole` |
+| CodeBuddy IDE | `.codebuddy/skills/ccmole/` | 设置中的 Skills 导入入口，核对作用域 | Skills 列表确认后，自然语言调用 |
+| Gemini CLI | `.gemini/skills/ccmole/` | `~/.gemini/skills/ccmole/` | `/skills reload`、`/skills list` 后自然语言调用 |
+
+表中是默认路径，请以目标机器的配置覆盖和已安装版本为准。Kimi 路径对应当前 Node.js 版 Kimi Code；旧 Python CLI 需另行核对。只选择需要的客户端和作用域，同名目录先检查，避免装到多个共享发现目录后互相覆盖。
 
 安装前检查目标是否已有同名目录；更新时先备份本地修改，再替换完整目录，避免残留旧引用。安装后开启新聊天并调用 Skill。卸载时只移除安装的 `ccmole` 目录，用户生成的交接包和配置备份独立保留。
 
@@ -54,7 +65,9 @@ git clone https://github.com/dusthappy/ccmole.git
 先检查同名目录，保留我的本地修改。安装后告诉我如何调用。
 ```
 
-目录与调用方式依据 [Codex 官方文档](https://learn.chatgpt.com/docs/build-skills) 和 [Claude Code 官方文档](https://code.claude.com/docs/en/skills)，核对日期 2026-10-13。其他支持 [Agent Skills 格式](https://agentskills.io/specification) 的宿主需确认其安装位置和工具权限；不据此宣称全部平台已实测。
+逐客户端官方来源、规则/MCP 格式差异和验证边界见 [客户端指南](skills/ccmole/references/clients.md)，核对日期 2026-10-13。其他支持 [Agent Skills 格式](https://agentskills.io/specification) 的宿主需确认其安装位置和工具权限；不据此宣称全部平台已实测。
+
+**Grok 与 Kimi 需要区分具体产品入口。** Grok Bot 的私有 Skill、普通 Grok 聊天、Grok Build CLI 不共用一套安装方式；Kimi Code Web 是本地 CLI 的网页界面，也不同于普通 Kimi 网页聊天。IDE 集成、Grok Bot 的完整资源导入仍需在目标宿主验证。仅有聊天能力时可粘贴自包含交接包，不宣称已安装完整 Skill。
 
 ## 实际运行边界
 
@@ -69,7 +82,7 @@ git clone https://github.com/dusthappy/ccmole.git
 
 `skills/ccmole/` 是唯一需要安装的目录。仓库根的说明和 [验证场景](verification/scenarios.md) 供使用者与维护者查看。
 
-本包独立交付 Skill 工作流，不代表既有 CCMole Desktop V1 已完成验收。当前版本 `0.1.0` 的验证记录见 [验证记录](verification/results.md)。
+本包独立交付 Skill 工作流，不代表既有 CCMole Desktop V1 已完成验收。当前版本 `0.1.1` 与此前 `0.1.0` 的验证记录见 [验证记录](verification/results.md)。
 
 本独立发布包采用 [MIT 许可证](LICENSE)。
 

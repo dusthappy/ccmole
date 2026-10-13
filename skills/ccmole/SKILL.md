@@ -3,7 +3,7 @@ name: ccmole
 description: Carry coding context and selected configuration between AI agents. Use for session handoff, context compaction, resuming from a handoff, or reusing Rules, Skills, MCP and non-secret agent settings. Not for ordinary summaries, general coding, or background synchronization.
 license: MIT
 metadata:
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # CCMole
@@ -19,6 +19,8 @@ Help the user continue work with another agent and bring along the configuration
 | Continue from a packet, especially on another device | [resume.md](references/resume.md) | A project check, then the next authorized task |
 | Reuse Rules, Skills, MCP or non-secret settings | [config-reuse.md](references/config-reuse.md) | A concrete migration plan; apply it when authorized |
 | First use / what can this installation do? | The relevant references only | Briefly state which requested operations the current host can actually perform |
+
+When a request names a client or asks about installation or client-specific configuration, also read [clients.md](references/clients.md). It covers Codex, Claude Code, ZCode, Kimi Code, Grok Build, OpenCode, Qoder, CodeBuddy and Gemini CLI, and distinguishes native Skill hosts from manual chat handoffs. Use its documented routes as starting evidence; verify the actual target version before writes.
 
 For a combined move, prepare both the work packet and the configuration plan. Configuration changes are not automatically required to resume work. Ask only for a missing source, destination or consequential choice; do not make the user fill in a setup questionnaire. Use a target-neutral packet when no receiving agent is specified.
 

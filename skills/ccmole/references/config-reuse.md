@@ -4,6 +4,8 @@ Move only the objects the user selected between named sources and targets. Use t
 
 ## Prepare a read-only plan
 
+For named clients, read [clients.md](clients.md) first to distinguish their surfaces, installation routes, Rules scope and MCP formats. Its documentation snapshot does not verify the user's installed version or authorize a migration.
+
 1. Identify the source and target **agent family, surface, version, and scope**: user, project, workspace, or a narrower directory. Confirm their actual paths and the selected objects. A family name alone does not prove that its CLI, desktop app, and editor extension accept the same configuration. Inspect only the selected locations. Do not scan unrelated home directories or follow unverified symlinks outside the selected scope.
 2. Verify the target's supported format, location, precedence, and activation behavior using its installed documentation, a supported read interface, or current official documentation. Record the evidence and version. When the target version or mapping is unverified, provide a preview only; do not guess fields or enable writes.
 3. Read the relevant source and target state. Keep source material unchanged. For every destination file, record the exact byte hash and relevant file permissions, or explicitly record **absent**. For a directory, inventory all planned paths and their hashes or absence; do not treat an existing directory as an empty install target. Include selected source hashes so changes to either side invalidate the plan. Do not print secret-bearing contents.

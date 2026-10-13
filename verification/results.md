@@ -1,4 +1,16 @@
-# 0.1.0 预览版验证记录
+# 预览版验证记录
+
+## 0.1.1：客户端指南扩展
+
+日期：2026-10-13。本次只扩展 Skill 路由、客户端安装与配置映射说明；未安装真实客户端、未改动用户配置，也未新增后台同步或 CCMole 桌面实现。
+
+- 官方资料：核对 ZCode、Kimi Code CLI / Desktop、Grok Build、OpenCode 的 Skill 入口及 Rules / MCP 差异；补充 Qoder CLI、CodeBuddy IDE、Gemini CLI 的 Skill 入口。逐项来源见 [客户端指南](../skills/ccmole/references/clients.md)。Kimi 的旧版 CLI、IDE / Web 集成和 Grok Bot 单列限制，不把普通网页聊天视为已支持本地安装。
+- 独立只读路由走查：C11 / C12 / C13 通过。Agent 读取 Skill 后，区分了 Grok 的具体产品入口；没有将当前 Node.js 版 Kimi 的路径套用到旧 Python CLI；没有把 Kimi 的 MCP 外层结构原样复制到 OpenCode。走查未执行安装、配置写入或端点访问。
+- `quick_validate.py` 返回 `Skill is valid!`；12 个发布文件的相对链接、UTF-8、换行、空白和私人路径/合成凭证标记检查通过；`git diff --check` 返回 0。
+- 复跑原工程 `ccmole-iteration-audit --scope docs`，结论仍为 **FAIL**：1 个此前已有的未定义接口引用错误、16 条既有 warning；本独立包无新增审计错误。原工程迭代状态没有改变。
+- 本次没有重复执行 0.1.0 的合成配置应用测试，历史观察保留在下方。所有客户端的真实安装发现、实际续行和 MCP / Provider 激活仍未验证；官方文档核对和路由走查不等于宿主端到端兼容性测试。
+
+## 0.1.0：初版工作流
 
 日期：2026-10-13。范围：独立 Skill 文本、资源、安装说明及合成场景；未修改 CCMole Desktop/Core/协议、真实 Agent 配置或历史。
 

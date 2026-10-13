@@ -18,6 +18,8 @@ No raw logs, complete repository, native database, environment dump or credentia
 
 ## Deliver
 
+For a named receiving client, consult [clients.md](clients.md). A portable packet works without matching native session formats; verify a supported delivery route separately. Ordinary web chat and a coding client's local web UI are different targets.
+
 Return the packet and a short receiving instruction: read it, reconcile it with the current request and checkout, then take the stated next step. If saved to a file, read it back and check that the current goal, actual state, failures, coverage and next action survived.
 
 If the user asked to create or send to a particular chat and the host supplies an authorized supported tool, use that tool after content preparation. Check the current tool contract or official target documentation, including the exact surface, rather than inventing CLI flags or using a guessed session ID. No such tool: provide manual paste/import steps. A new native chat ID must come from the target itself.
