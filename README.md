@@ -1,89 +1,91 @@
 # CCMole Skill
 
-**换一个 Agent，接着做；换一套工具，带上需要的配置。**
+English | [简体中文](README.zh-CN.md)
 
-CCMole 是一个可安装的 Agent Skill，帮助你整理开发上下文、接续工作，并在不同 Agent 之间复用选定的 Rules、Skills、MCP 和非敏感配置。直接在你原本使用的 Agent 中操作。
+**Switch agents and keep working. Switch tools and bring the configuration you need.**
 
-当前为 **0.1.1 预览版**：提供两条工作流，以及 Codex、Claude Code、ZCode、Kimi Code、Grok Build、OpenCode、Qoder、CodeBuddy、Gemini CLI 的客户端指南。安装入口已核对官方文档，真实客户端运行情况按实际证据报告。
+CCMole is an installable Agent Skill that helps you organize development context, resume work, and reuse selected Rules, Skills, MCP, and non-secret settings across agents. Use it directly in the agent you already work with.
 
-## 从一句话开始
+The current release is **0.1.1 preview**. It provides two workflows and client guides for Codex, Claude Code, ZCode, Kimi Code, Grok Build, OpenCode, Qoder, CodeBuddy, and Gemini CLI. Installation instructions have been checked against official documentation; claims about operation in real clients are limited to what has actually been verified.
+
+## Start with a request
 
 ```text
-把这个聊天的工作交给下一个 Agent，保留还没解决的问题和下一步。
+Hand off the work in this chat to the next agent. Keep the unresolved issues and next steps.
 ```
 
 ```text
-读取这个交接包，先核对当前工程，再接着完成剩余工作。
+Read this handoff packet, verify the current project, then continue the remaining work.
 ```
 
 ```text
-把这个项目的 Rules、指定的 Skill 和 MCP 配置迁到另一 Agent，先给我看差异。
+Move this project's Rules, selected Skills, and MCP configuration to another agent. Show me the diff first.
 ```
 
-例如，把 Kimi Code 中的工作交给 ZCode，或把 Grok Build 的项目交给 OpenCode。接力使用可读的交接包，配置迁移则先核对两端格式和作用域。
+For example, hand off work from Kimi Code to ZCode, or move a Grok Build project to OpenCode. Work handoffs use readable packets; configuration transfers begin by checking the format and scope on both sides.
 
-Codex / ZCode 使用 `$ccmole`，Kimi Code 使用 `/skill:ccmole`，Claude Code / Grok Build 使用 `/ccmole`。OpenCode 可直接说「使用 ccmole 帮我交接当前工作」。具体入口见下表。
+Use `$ccmole` in Codex / ZCode, `/skill:ccmole` in Kimi Code, or `/ccmole` in Claude Code / Grok Build. In OpenCode, ask “Use ccmole to help me hand off my current work.” See the table below for each client's entry point.
 
-## 两条工作流
+## Two workflows
 
-| 工作流 | 你得到什么 |
+| Workflow | What you get |
 |---|---|
-| 上下文接力 | 包含目标、决定、工程状态、失败记录和下一步的 Markdown 交接包；支持完整可用范围、选定范围和有损压缩 |
-| 接收并续行 | 核对项目、分支、提交和未提交修改；匹配后继续，不匹配时给出具体差异 |
-| 配置复用 | 选定 Rules、Skills、MCP、非敏感设置的迁移计划与 Diff；授权后按目标实际支持的方式应用、验证并保留恢复信息 |
+| Context handoff | A Markdown packet with goals, decisions, project state, failed attempts, and next steps; supports all available context, a selected scope, or lossy compaction |
+| Receive and resume | As part of a handoff, check the project, branch, commit, and uncommitted changes; continue when they match, or report specific differences |
+| Configuration reuse | A transfer plan and diff for selected Rules, Skills, MCP, and non-secret settings; after authorization, apply them through supported target mechanisms, verify the result, and retain recovery information |
 
-配置迁移会检查作用域、格式、相对路径、依赖和凭证引用。源文件保留，目标已有内容默认保留。未知版本或无法验证的字段只输出预览；API Key、登录令牌和原生会话数据库不随包迁移。
+Configuration transfers check scope, format, relative paths, dependencies, and credential references. Source files are preserved, and existing target content is preserved by default. Unknown versions or unverifiable fields receive a preview only. API keys, login tokens, and native session databases are excluded from the transfer.
 
-## 安装
+## Installation
 
-下载 [dusthappy/ccmole](https://github.com/dusthappy/ccmole) 后，将 `skills/ccmole` **整个目录**复制到宿主的 Skill 目录。支持文件必须一起保留；无需安装 CCMole Desktop、Rust、Node.js、数据库或后台服务。
+Download [dusthappy/ccmole](https://github.com/dusthappy/ccmole), then copy the **entire `skills/ccmole` directory** into your host's Skill directory. Keep all supporting files together. The Skill does not require installing CCMole Desktop, Rust, Node.js, a database, or a background service.
 
 ```bash
 git clone https://github.com/dusthappy/ccmole.git
 ```
 
-| 客户端 | 仅当前项目 | 当前用户所有项目 | 调用 / 发现 |
+| Client | Current project only | All projects for the current user | Invoke / discover |
 |---|---|---|---|
 | Codex | `.agents/skills/ccmole/` | `~/.agents/skills/ccmole/` | `$ccmole` |
 | Claude Code | `.claude/skills/ccmole/` | `~/.claude/skills/ccmole/` | `/ccmole` |
-| ZCode 内置 Agent | `.zcode/skills/ccmole/` | `~/.zcode/skills/ccmole/` | 设置 → Skills → 刷新并启用；`$ccmole` |
-| Kimi Code CLI / Desktop | `.kimi-code/skills/ccmole/` | `~/.kimi-code/skills/ccmole/`，或 `$KIMI_CODE_HOME/skills/ccmole/` | 新会话中 `/skill:ccmole` |
+| ZCode built-in agent | `.zcode/skills/ccmole/` | `~/.zcode/skills/ccmole/` | Settings → Skills → refresh and enable; `$ccmole` |
+| Kimi Code CLI / Desktop | `.kimi-code/skills/ccmole/` | `~/.kimi-code/skills/ccmole/`, or `$KIMI_CODE_HOME/skills/ccmole/` | `/skill:ccmole` in a new session |
 | Grok Build CLI | `.grok/skills/ccmole/` | `~/.grok/skills/ccmole/` | `/ccmole` |
-| OpenCode | `.opencode/skills/ccmole/` | `~/.config/opencode/skills/ccmole/` | 自然语言要求使用 `ccmole` |
-| Qoder CLI | `.qoder/skills/ccmole/` | `~/.qoder/skills/ccmole/` | `/skills reload` 后 `/ccmole` |
-| CodeBuddy IDE | `.codebuddy/skills/ccmole/` | 设置中的 Skills 导入入口，核对作用域 | Skills 列表确认后，自然语言调用 |
-| Gemini CLI | `.gemini/skills/ccmole/` | `~/.gemini/skills/ccmole/` | `/skills reload`、`/skills list` 后自然语言调用 |
+| OpenCode | `.opencode/skills/ccmole/` | `~/.config/opencode/skills/ccmole/` | Ask to use `ccmole` in natural language |
+| Qoder CLI | `.qoder/skills/ccmole/` | `~/.qoder/skills/ccmole/` | `/skills reload`, then `/ccmole` |
+| CodeBuddy IDE | `.codebuddy/skills/ccmole/` | Import through Skills in Settings; verify the scope | Confirm it appears in the Skills list, then invoke it in natural language |
+| Gemini CLI | `.gemini/skills/ccmole/` | `~/.gemini/skills/ccmole/` | `/skills reload` and `/skills list`, then invoke it in natural language |
 
-表中是默认路径，请以目标机器的配置覆盖和已安装版本为准。Kimi 路径对应当前 Node.js 版 Kimi Code；旧 Python CLI 需另行核对。只选择需要的客户端和作用域，同名目录先检查，避免装到多个共享发现目录后互相覆盖。
+These are default paths. Check configuration overrides and the installed version on the target machine. The Kimi paths apply to the current Node.js version of Kimi Code; the older Python CLI requires a separate check. Choose only the clients and scopes you need. Check for an existing directory with the same name, and avoid conflicting copies across shared discovery directories.
 
-安装前检查目标是否已有同名目录；更新时先备份本地修改，再替换完整目录，避免残留旧引用。安装后开启新聊天并调用 Skill。卸载时只移除安装的 `ccmole` 目录，用户生成的交接包和配置备份独立保留。
+Before installing, check whether the target already contains a directory with the same name. When updating, back up local changes, then replace the entire directory so outdated references do not remain. Start a new chat after installation and invoke the Skill. To uninstall, remove only the installed `ccmole` directory; keep your handoff packets and configuration backups separately.
 
-也可以让 Agent 帮你安装：
+You can also ask your agent to install it:
 
 ```text
-请把我下载的 CCMole 发布包中的 skills/ccmole 安装到当前项目的 Skill 目录。
-先检查同名目录，保留我的本地修改。安装后告诉我如何调用。
+Install skills/ccmole from the CCMole release package I downloaded into this project's Skill directory.
+Check for an existing directory with the same name and preserve my local changes. Tell me how to invoke it afterward.
 ```
 
-逐客户端官方来源、规则/MCP 格式差异和验证边界见 [客户端指南](skills/ccmole/references/clients.md)，核对日期 2026-10-13。其他支持 [Agent Skills 格式](https://agentskills.io/specification) 的宿主需确认其安装位置和工具权限；不据此宣称全部平台已实测。
+See the [client guide](skills/ccmole/references/clients.md) for official sources, Rules / MCP format differences, and verification limits for each client, checked on 2026-10-13. For other hosts that support the [Agent Skills format](https://agentskills.io/specification), verify their installation locations and tool permissions. Format compatibility does not mean every platform has been tested.
 
-**Grok 与 Kimi 需要区分具体产品入口。** Grok Bot 的私有 Skill、普通 Grok 聊天、Grok Build CLI 不共用一套安装方式；Kimi Code Web 是本地 CLI 的网页界面，也不同于普通 Kimi 网页聊天。IDE 集成、Grok Bot 的完整资源导入仍需在目标宿主验证。仅有聊天能力时可粘贴自包含交接包，不宣称已安装完整 Skill。
+**Identify the specific Grok or Kimi product you use.** Grok Bot private Skills, ordinary Grok chat, and Grok Build CLI do not share one installation method. Kimi Code Web is a browser interface for the local CLI, distinct from ordinary Kimi web chat. IDE integrations and importing the complete resource set into Grok Bot still require verification in the target host. In a chat-only environment, paste a self-contained handoff packet; this does not constitute installation of the full Skill.
 
-## 实际运行边界
+## Runtime boundaries
 
-这是工作流指令包，执行能力和权限来自宿主 Agent。它本身不包含守护进程、网络传输服务或凭证存储。宿主模型仍可能处理交给它的内容。
+This package contains workflow instructions. Its execution capabilities and permissions come from the host agent. It includes no daemon, network transfer service, or credential store. The host model may still process content you give it.
 
-- 仅有聊天能力时，可以整理和接收文本上下文；文件核验和配置应用需要宿主文件工具。
-- 自动新建聊天、发送交接内容或验证目标配置实际生效，需要宿主提供相应受支持工具和用户授权；工具不可用时提供手动步骤。
-- 当前版本不提供统一历史会话索引、原生会话格式迁移、桌面界面、后台自动同步、Provider 代理或跨文件事务保证。
-- 配置已写入与目标 Agent 已加载配置分别报告，不把两者混为成功。
+- Chat-only hosts can organize and receive text context. File verification and configuration changes require host file tools.
+- Automatically creating a new chat, sending handoff content, or verifying that the target configuration is active requires supported host tools and user authorization. Manual steps are provided when those tools are unavailable.
+- This release does not provide a unified session history index, native session format migration, a desktop interface, automatic background synchronization, a provider proxy, or transaction guarantees across files.
+- Writing configuration and confirming that the target agent has loaded it are reported separately.
 
-## 发布内容
+## Package contents
 
-`skills/ccmole/` 是唯一需要安装的目录。仓库根的说明和 [验证场景](verification/scenarios.md) 供使用者与维护者查看。
+`skills/ccmole/` is the only directory you need to install. The repository-level documentation and [verification scenarios](verification/scenarios.md) are for users and maintainers.
 
-本包独立交付 Skill 工作流，不代表既有 CCMole Desktop V1 已完成验收。当前版本 `0.1.1` 与此前 `0.1.0` 的验证记录见 [验证记录](verification/results.md)。
+This package delivers the Skill workflows independently. It does not mean the existing CCMole Desktop V1 has passed acceptance. See the [verification record](verification/results.md) for the current `0.1.1` release and the earlier `0.1.0` release.
 
-本独立发布包采用 [MIT 许可证](LICENSE)。
+This standalone package is available under the [MIT license](LICENSE).
 
-产品设计参考了 [yobiru](https://github.com/chekusu/yobiru) 的场景表达与渐进上手思路；CCMole 的流程与文本独立编写，未复制其代码或 Skill 内容。
+The product design draws inspiration from [yobiru](https://github.com/chekusu/yobiru)'s scenario-based presentation and gradual onboarding. CCMole's workflows and text were written independently; no code or Skill content was copied.
