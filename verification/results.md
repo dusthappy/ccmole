@@ -1,10 +1,39 @@
 # 预览版验证记录
 
+## 0.2.0：四个独立 Skill
+
+日期：2026-10-13。范围：将原来的 `ccmole` 拆为交接、压缩、续行、配置复用四个独立包；更新中英文安装和升级说明。原工程 `.agents/skills`、Desktop/Core、真实 Agent 配置与历史均未修改。
+
+### 独立包与文档检查
+
+- 四个包的 `quick_validate.py` 均返回 `Skill is valid!`，目录名与 frontmatter 名称一致，版本均为 `0.2.0`。四份 UI 元数据的默认提示词分别调用本包，没有其他 Skill 或工具依赖。
+- C14 通过：每个包分别生成 ZIP 并解压到独立临时目录，逐字节核对归档内容；所有相对链接、模板和许可证在各自包内闭合。安装一包不需要保留旧 `ccmole` 或任何兄弟目录。
+- 当前发布树共 26 个文件、4 个 `SKILL.md`；中英文 README 的技术术语、路径、命令和引用目标一致。旧入口只出现在升级说明中，不伪装为新 Skill 的别名；没有自动修改用户安装目录。
+
+### 新包实际观察
+
+评估 Agent 从临时目录中的独立包和原始合成资料开始，没有读取预期答案。评估范围见 [场景定义](scenarios.md)。
+
+| 包 / 场景 | 结果 | 观察到的行为 |
+|---|---|---|
+| `ccmole-session-handoff`，C01 / C02 / C11 | PASS | 保存并回读交接包，保留最新范围修正、失败测试、缺失源码与历史；排除无关个人事项和导入指令；对 Grok 的具体产品入口保持未知，没有发送或创建聊天 |
+| `ccmole-context-compact`，C15 | PASS | 独立生成续行简报，保留最新目标、未解决失败、压缩损失和下一步；只写指定简报，没有继续开发、投递或创建聊天 |
+| `ccmole-project-resume`，C03 / C04 | PASS | 同 HEAD 但缺少源端未提交内容时判为 REVIEW，未写目标代码；另一份匹配夹具判为 READY 后实际创建指定文件，精确字节和换行正确 |
+| `ccmole-config-reuse`，C05 / C07 | PASS | 对合成规则产生具体 Diff、来源/目标 Hash 和备份设计；未知 MCP 格式保持 preview only，示例凭证值未进入计划；源文件和目标配置未改动，没有运行服务器或访问端点 |
+| `ccmole-config-reuse`，C06 | PASS | 预览后人为追加目标规则；对获批旧计划检查到漂移，停止应用并保留新增内容，基于新基线重新生成 Diff 与计划 Hash |
+| `ccmole-config-reuse`，C08 | PASS | 新计划获得合成评估授权后，先备份再追加；逐字节核对目标和备份，保留原规则及并发新增内容，目标/备份权限正确，源文件未变，未声称 MCP 或真实客户端激活 |
+
+评估中重建新计划的首次临时脚本因换行断言失败而停止，没有写入文件；更正该评估脚本后才保存新计划。失败已保留在评估记录中，没有通过覆盖目标或改变 Skill 规则绕过检查。
+
+主 Agent 另行核对了续行文件精确字节、缺失状态下无目标写入、源文件保留、导入指令未执行、无关私人内容省略及预览无凭证。配置应用后又核对了目标/备份精确字节、访问权限、源文件未变及全部输出无示例凭证。`git diff --check` 通过。原工程 `ccmole-iteration-audit --scope docs` 仍为 **FAIL**：1 个此前已有的未定义接口引用错误、16 条既有 warning，本次独立包没有新增审计发现；不据此宣布原工程迭代或 GA 通过。
+
+这些结果来自受限合成场景。没有进行真实客户端安装、发现、跨客户端投递或 MCP / Provider 激活；没有验证完整取消、崩溃恢复矩阵。此前 0.1.x 的结果保留为历史记录，不自动视为四个新包的验证结果。
+
 ## 0.1.1：客户端指南扩展
 
 日期：2026-10-13。本次只扩展 Skill 路由、客户端安装与配置映射说明；未安装真实客户端、未改动用户配置，也未新增后台同步或 CCMole 桌面实现。
 
-- 官方资料：核对 ZCode、Kimi Code CLI / Desktop、Grok Build、OpenCode 的 Skill 入口及 Rules / MCP 差异；补充 Qoder CLI、CodeBuddy IDE、Gemini CLI 的 Skill 入口。逐项来源见 [客户端指南](../skills/ccmole/references/clients.md)。Kimi 的旧版 CLI、IDE / Web 集成和 Grok Bot 单列限制，不把普通网页聊天视为已支持本地安装。
+- 官方资料：核对 ZCode、Kimi Code CLI / Desktop、Grok Build、OpenCode 的 Skill 入口及 Rules / MCP 差异；补充 Qoder CLI、CodeBuddy IDE、Gemini CLI 的 Skill 入口。逐项来源见 [客户端指南](../skills/ccmole-config-reuse/references/clients.md)。Kimi 的旧版 CLI、IDE / Web 集成和 Grok Bot 单列限制，不把普通网页聊天视为已支持本地安装。
 - 独立只读路由走查：C11 / C12 / C13 通过。Agent 读取 Skill 后，区分了 Grok 的具体产品入口；没有将当前 Node.js 版 Kimi 的路径套用到旧 Python CLI；没有把 Kimi 的 MCP 外层结构原样复制到 OpenCode。走查未执行安装、配置写入或端点访问。
 - `quick_validate.py` 返回 `Skill is valid!`；12 个发布文件的相对链接、UTF-8、换行、空白和私人路径/合成凭证标记检查通过；`git diff --check` 返回 0。
 - 复跑原工程 `ccmole-iteration-audit --scope docs`，结论仍为 **FAIL**：1 个此前已有的未定义接口引用错误、16 条既有 warning；本独立包无新增审计错误。原工程迭代状态没有改变。

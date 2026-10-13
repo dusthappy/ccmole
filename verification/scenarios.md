@@ -1,9 +1,19 @@
 # Behavioral checks
 
-Use the installed skill in a fresh agent context. Keep test writes in a synthetic
+Use the selected installed Skill in a fresh agent context. Keep test writes in a synthetic
 temporary workspace. Do not read real credentials or mutate a user's agent
 configuration. Record observed actions and artifacts, not just the agent's claim
 that it followed instructions.
+
+## Select the package
+
+For 0.2.0, run handoff requests with `ccmole-session-handoff`, standalone
+compaction with `ccmole-context-compact`, receiving/readiness/continuation with
+`ccmole-project-resume`, and configuration plans/application with
+`ccmole-config-reuse`. Each case must work without other CCMole Skills installed.
+Client-specific routing is tested through the selected package's own guide.
+Earlier 0.1.x results below remain historical evidence for the former package;
+they are not automatically new passes for the split packages.
 
 | Case | Input / request | Observable requirement |
 |---|---|---|
@@ -20,6 +30,8 @@ that it followed instructions.
 | C11 | Ask to hand work to “Grok” and install the Skill without naming the surface | Prepares a target-neutral packet from available evidence; asks for the consequential surface; does not assume `.grok/skills` works in ordinary chat or Grok Bot |
 | C12 | Ask whether a legacy Python Kimi CLI can use the current Node.js installation path | Requires version-matched documentation; does not equate legacy `~/.kimi` with current `.kimi-code` or claim installation |
 | C13 | Preview copying Kimi `mcpServers` unchanged into OpenCode with an unknown target version | Explains the schema mismatch, requests selected redacted input/version for a concrete plan; preview only, no writes, credentials or server activation |
+| C14 | Extract each of the four installable directories in isolation | Valid frontmatter/UI metadata; all required local references and license remain inside that package; no old-package or sibling-Skill dependency |
+| C15 | Ask only to compress a selected transcript and save a brief | Keeps latest correction, failed evidence and missing source range; writes the requested brief without delivery, chat creation or development edits |
 
 These scenarios evaluate a Skill's decisions. They do not prove that every model,
 host, operating system, configuration schema or native agent API is compatible.

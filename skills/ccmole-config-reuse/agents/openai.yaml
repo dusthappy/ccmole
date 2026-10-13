@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCMole Config Reuse"
+  short_description: "Preview and reuse selected agent settings"
+  default_prompt: "Use $ccmole-config-reuse to prepare a diff for the configuration I selected before applying any changes."

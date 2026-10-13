@@ -10,10 +10,11 @@ alone is insufficient. Supporting a desktop host does not require CCMole Desktop
 Identify the source and destination product, surface (CLI, built-in agent,
 editor integration, local web UI, or hosted chat), version, machine and scope.
 Use already available context; ask only for a distinction that changes the next
-action. For an ambiguous “Grok” or “Kimi” request, prepare a target-neutral
-handoff immediately, but resolve the surface before installation or writes.
+action. For an ambiguous “Grok” or “Kimi” request, resolve the surface before
+installation or writes. Continue independent preparation within the requested
+workflow while that distinction is unresolved.
 
-Copy the **whole `ccmole` directory**, including its references and assets, to
+Copy the **whole `ccmole-config-reuse` directory**, including its references and assets, to
 one selected destination. Paths below are defaults; respect documented home or
 configuration overrides on the target machine. A project path is relative to
 that client's project/workspace root. `~` denotes the target user's home.
@@ -24,16 +25,16 @@ or enable shared-directory discovery as an implied prerequisite.
 
 | Surface | Project directory | User directory | Invocation / discovery |
 |---|---|---|---|
-| [Codex](https://learn.chatgpt.com/docs/build-skills) | `.agents/skills/ccmole/` | `~/.agents/skills/ccmole/` | `$ccmole`; start a new conversation after installation |
-| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/ccmole/` | `~/.claude/skills/ccmole/` | `/ccmole` |
-| [ZCode built-in Agent](https://zcode.z.ai/en/docs/skill) | `.zcode/skills/ccmole/` | `~/.zcode/skills/ccmole/` | Settings → Skills → Refresh and enable; `$ccmole` or the Skills group in `/` |
-| [Kimi Code CLI](https://www.kimi.com/code/docs/en/kimi-code-cli/customization/skills.html) | `.kimi-code/skills/ccmole/` | `$KIMI_CODE_HOME/skills/ccmole/`, default `~/.kimi-code/skills/ccmole/` | New session, then `/skill:ccmole` followed by the request |
-| [Kimi Code Desktop](https://www.kimi.com/code/docs/en/kimi-code-desktop/settings-and-extensions.html) | Same as Kimi Code CLI | Same as Kimi Code CLI | Same Skill discovery; `/` menu or `/skill:ccmole` |
-| [Grok Build CLI](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-pager/docs/user-guide/08-skills.md) | `.grok/skills/ccmole/` | `~/.grok/skills/ccmole/` | `/ccmole`; documented inspection: `grok inspect --json` |
-| [OpenCode](https://opencode.ai/docs/skills/) | `.opencode/skills/ccmole/` | `~/.config/opencode/skills/ccmole/` | Ask the agent to use `ccmole`; it loads it through the native `skill` tool |
-| [Qoder CLI](https://docs.qoder.com/cli/Skills) | `.qoder/skills/ccmole/` | `~/.qoder/skills/ccmole/` | `/skills reload`, inspect `/skills`, then `/ccmole` |
-| [CodeBuddy IDE](https://www.codebuddy.ai/docs/ide/Features/Skills) | `.codebuddy/skills/ccmole/` | Use the documented Settings → Skills import UI; verify its chosen scope | Inspect the Skills list, then ask the agent to use `ccmole` |
-| [Gemini CLI](https://geminicli.com/docs/cli/using-agent-skills/) | `.gemini/skills/ccmole/` | `~/.gemini/skills/ccmole/` | `/skills reload`, `/skills list`, then ask to use `ccmole` |
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `.agents/skills/ccmole-config-reuse/` | `~/.agents/skills/ccmole-config-reuse/` | `$ccmole-config-reuse`; start a new conversation after installation |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/ccmole-config-reuse/` | `~/.claude/skills/ccmole-config-reuse/` | `/ccmole-config-reuse` |
+| [ZCode built-in Agent](https://zcode.z.ai/en/docs/skill) | `.zcode/skills/ccmole-config-reuse/` | `~/.zcode/skills/ccmole-config-reuse/` | Settings → Skills → Refresh and enable; `$ccmole-config-reuse` or the Skills group in `/` |
+| [Kimi Code CLI](https://www.kimi.com/code/docs/en/kimi-code-cli/customization/skills.html) | `.kimi-code/skills/ccmole-config-reuse/` | `$KIMI_CODE_HOME/skills/ccmole-config-reuse/`, default `~/.kimi-code/skills/ccmole-config-reuse/` | New session, then `/skill:ccmole-config-reuse` followed by the request |
+| [Kimi Code Desktop](https://www.kimi.com/code/docs/en/kimi-code-desktop/settings-and-extensions.html) | Same as Kimi Code CLI | Same as Kimi Code CLI | Same Skill discovery; `/` menu or `/skill:ccmole-config-reuse` |
+| [Grok Build CLI](https://github.com/xai-org/grok-build/blob/main/crates/codegen/xai-grok-pager/docs/user-guide/08-skills.md) | `.grok/skills/ccmole-config-reuse/` | `~/.grok/skills/ccmole-config-reuse/` | `/ccmole-config-reuse`; documented inspection: `grok inspect --json` |
+| [OpenCode](https://opencode.ai/docs/skills/) | `.opencode/skills/ccmole-config-reuse/` | `~/.config/opencode/skills/ccmole-config-reuse/` | Ask the agent to use `ccmole-config-reuse`; it loads it through the native `skill` tool |
+| [Qoder CLI](https://docs.qoder.com/cli/Skills) | `.qoder/skills/ccmole-config-reuse/` | `~/.qoder/skills/ccmole-config-reuse/` | `/skills reload`, inspect `/skills`, then `/ccmole-config-reuse` |
+| [CodeBuddy IDE](https://www.codebuddy.ai/docs/ide/Features/Skills) | `.codebuddy/skills/ccmole-config-reuse/` | Use the documented Settings → Skills import UI; verify its chosen scope | Inspect the Skills list, then ask the agent to use `ccmole-config-reuse` |
+| [Gemini CLI](https://geminicli.com/docs/cli/using-agent-skills/) | `.gemini/skills/ccmole-config-reuse/` | `~/.gemini/skills/ccmole-config-reuse/` | `/skills reload`, `/skills list`, then ask to use `ccmole-config-reuse` |
 
 ZCode's project location is also documented in its [FAQ](https://zcode.z.ai/en/docs/qa).
 The Kimi paths above apply to the current Node.js CLI documented by Kimi;
@@ -45,7 +46,7 @@ selected client's native route when isolation matters, and inspect existing
 same-name definitions before adding a copy. In Qoder CLI a user definition can
 override the project definition. In OpenCode a disabled `skill` tool or Skill
 permission can prevent loading; this package does not enable its optional slash
-metadata, so do not promise `/ccmole` there. Discovery is not proof that the
+metadata, so do not promise `/ccmole-config-reuse` there. Discovery is not proof that the
 workflow has run successfully.
 
 ## Surfaces that need an additional check
@@ -97,3 +98,7 @@ exercised and configuration activated. Name the exact client/surface/version
 and remaining limitations. Read-only discovery should be scoped and its output
 redacted; an inspection command is not permission to start servers or disclose
 all configuration. Apply no configuration or runtime change during routing.
+
+Client routing does not broaden this Skill's task. Prepare only the requested
+output; installation, delivery, continuation and configuration changes each
+remain subject to the workflow and authorization in this package.

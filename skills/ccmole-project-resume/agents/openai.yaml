@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCMole Project Resume"
+  short_description: "Verify project state and continue work"
+  default_prompt: "Use $ccmole-project-resume to check this handoff against the current project and continue the requested task when ready."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCMole Session Handoff"
+  short_description: "Hand coding work to another agent or chat"
+  default_prompt: "Use $ccmole-session-handoff to prepare a handoff of this work, keeping unresolved issues and the next action."

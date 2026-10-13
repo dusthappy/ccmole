@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCMole Context Compact"
+  short_description: "Compress context into a continuation brief"
+  default_prompt: "Use $ccmole-context-compact to shorten this conversation while preserving the latest goal, failures and next steps."
